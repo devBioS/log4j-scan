@@ -1,3 +1,8 @@
+# Update 2021-12-13 devBioS
+ - Added urlopen in addition to the requests call as the requests call urlencodes the URLs and this will not trigger all vulnerable software (e.g. blynk)
+ - you need to install python3 and install pycryptodome: pip3 install pycryptodome
+
+
 <h1 align="center">log4j-scan</h1>
 <h4 align="center">A fully automated, accurate, and extensive scanner for finding vulnerable log4j hosts</h4>
 
