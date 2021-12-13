@@ -14,6 +14,7 @@ import requests
 import time
 import sys
 from urllib import parse as urlparse
+from urllib.request import urlopen
 import base64
 import json
 import random
@@ -89,7 +90,6 @@ parser.add_argument("--wait-time",
                     dest="wait_time",
                     help="Wait time after all URLs are processed (in seconds) - [Default: 5].",
                     default=5,
-                    type=int,
                     action='store')
 parser.add_argument("--waf-bypass",
                     dest="waf_bypass_payloads",
@@ -250,6 +250,10 @@ def scan_url(url, callback_host):
         cprint(f"[•] URL: {url} | PAYLOAD: {payload}", "cyan")
         if args.request_type.upper() == "GET" or args.run_all_tests:
             try:
+                try:
+                 urlopen(url+"?v="+payload)
+                except:
+                  pass
                 requests.request(url=url,
                                  method="GET",
                                  params={"v": payload},
@@ -322,7 +326,7 @@ def main():
 
     cprint("[•] Payloads sent to all URLs. Waiting for DNS OOB callbacks.", "cyan")
     cprint("[•] Waiting...", "cyan")
-    time.sleep(args.wait_time)
+    time.sleep(int(args.wait_time))
     records = dns_callback.pull_logs()
     if len(records) == 0:
         cprint("[•] Targets does not seem to be vulnerable.", "green")
